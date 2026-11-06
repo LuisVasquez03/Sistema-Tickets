@@ -23,7 +23,7 @@ public void setIdServicio(int idServicio) { this.idServicio = idServicio; }
  
 public String getNombre() { return nombre; }
  public void setNombre(String nombre) {
-if (nombre == null || nombre.trim().isEmpty()) { throw new IllegalArgumentException("El nombre del servicio es obligatorio.");   }
+if (nombre == null || nombre.trim().isEmpty()) { throw new IllegalArgumentException("El nombre del servicio es obligatorio");   }
 nombre = nombre.trim();
 if (nombre.length() > max_nombre) {
 throw new IllegalArgumentException("El nombre no puede superar " + max_nombre + " caracteres.");  }
@@ -33,11 +33,11 @@ this.nombre = nombre;
 public String getDescripcion() { return descripcion; }
 public void setDescripcion(String descripcion) {
 if (descripcion == null || descripcion.trim().isEmpty()) {
-throw new IllegalArgumentException("La descripción del servicio es obligatoria.");
+throw new IllegalArgumentException("La descripcion del servicio es obligatoria");
 }
 descripcion = descripcion.trim();
 if (descripcion.length() > max_descripcion) {
-throw new IllegalArgumentException("La descripcion tiene como limite " + max_descripcion + " caracteres.");
+throw new IllegalArgumentException("La descripcion tiene como limite " + max_descripcion + " caracteres");
 }
 this.descripcion = descripcion;
 }
