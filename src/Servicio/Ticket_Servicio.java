@@ -42,8 +42,27 @@ public class Ticket_Servicio {
     }
 
     public Ticket buscarTicket(String codigo) {
-        return listaTickets.buscarPorCodigo(codigo);
+        return listaTickets.buscarPorCodigo(codigo);  
+        
     }
+   
+    public boolean iniciarAtencion(String nroTicket) {
+    Ticket ticket = buscarTicket(nroTicket);
+
+    if (ticket == null) {
+        return false;
+    }
+
+    String estadoActual = ticket.getEstado();
+
+    if (!"Pendiente".equalsIgnoreCase(estadoActual)
+            && !"REGISTRADO".equalsIgnoreCase(estadoActual)) {
+        return false;
+    }
+
+    ticket.setEstado("EN_PROCESO");
+    return true;
+}
 
     public boolean eliminarTicket(String codigo) {
         return listaTickets.eliminar(codigo);

@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package Vista;
 import Estructura.Cola_Prioridad;
 import Estructura.Pila_historial;
@@ -13,10 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author luisv
- */
+
 public class Cola_Atencion extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Cola_Atencion.class.getName());
@@ -96,7 +90,7 @@ public class Cola_Atencion extends javax.swing.JFrame {
 
         lblSiguiente.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblSiguiente.setForeground(new java.awt.Color(255, 255, 255));
-        lblSiguiente.setText("Siguiente: TCK-001  ");
+        lblSiguiente.setText("Siguiente: No hay Tickets");
 
         lblCantidad.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblCantidad.setForeground(new java.awt.Color(255, 255, 255));
@@ -110,7 +104,7 @@ public class Cola_Atencion extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Pos", "Código", "Telefono", "Placa", "Servicio", "Estado"
+                "Posición", "Nro Ticket", "ID Cliente", "ID Vehículo", "ID Trabajador", "Estado"
             }
         ));
         jScrollPane1.setViewportView(tblCola);
@@ -278,28 +272,9 @@ actualizarTabla();        // TODO add your handling code here:
     cerrarVentana();        // TODO add your handling code here:
     }//GEN-LAST:event_btnCerrarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
+    public static void main(String args[]) {
+
         java.awt.EventQueue.invokeLater(() -> new Cola_Atencion().setVisible(true));
     }
 
@@ -341,29 +316,29 @@ actualizarTabla();        // TODO add your handling code here:
         tblCola.getTableHeader().setReorderingAllowed(false);
     }
 
-    private void actualizarTabla() {
-        modeloTabla.setRowCount(0);
+private void actualizarTabla() {
+    modeloTabla.setRowCount(0);
 
-        Ticket[] tickets = colaAtencion.obtenerTodos();
+    Ticket[] tickets = colaAtencion.obtenerTodos();
 
-        for (int posicion = 0;
-             posicion < tickets.length;
-             posicion++) {
+    for (int posicion = 0;
+         posicion < tickets.length;
+         posicion++) {
 
-            Ticket ticket = tickets[posicion];
+        Ticket ticket = tickets[posicion];
 
-            modeloTabla.addRow(new Object[]{
-                posicion + 1,
-                ticket.getCodigo(),
-                mostrarTexto(ticket.getTelefonoCliente()),
-                mostrarTexto(ticket.getPlacaVehiculo()),
-                mostrarTexto(ticket.getServicio()),
-                mostrarTexto(ticket.getEstado())
-            });
-        }
-
-        actualizarResumen();
+        modeloTabla.addRow(new Object[]{
+            posicion + 1,
+            ticket.getNroTicket(),
+            ticket.getIdCliente(),
+            ticket.getIdVehiculo(),
+            ticket.getIdTrabajador(),
+            ticket.getEstado()
+        });
     }
+
+    actualizarResumen();
+}
 
     private void actualizarResumen() {
         lblCantidad.setText(
@@ -380,7 +355,7 @@ actualizarTabla();        // TODO add your handling code here:
         } else {
             lblSiguiente.setText(
                     "Siguiente: "
-                    + siguiente.getCodigo()
+                    + siguiente.getNroTicket()
             );
         }
 
@@ -390,39 +365,40 @@ actualizarTabla();        // TODO add your handling code here:
         btnIniciarAtencion.setEnabled(existenTickets);
     }
 
-    private void mostrarSiguiente() {
-        Ticket siguiente = colaAtencion.verSiguiente();
+private void mostrarSiguiente() {
+    Ticket siguiente = colaAtencion.verSiguiente();
 
-        if (siguiente == null) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "No existen tickets pendientes.",
-                    "Cola vacía",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-            return;
-        }
-
-        String detalle
-                = "Código: " + siguiente.getCodigo()
-                + "\nTeléfono: "
-                + mostrarTexto(siguiente.getTelefonoCliente())
-                + "\nPlaca: "
-                + mostrarTexto(siguiente.getPlacaVehiculo())
-                + "\nServicio: "
-                + mostrarTexto(siguiente.getServicio())
-                + "\nEstado: "
-                + mostrarTexto(siguiente.getEstado());
-
+    if (siguiente == null) {
         JOptionPane.showMessageDialog(
                 this,
-                detalle,
-                "Siguiente ticket",
+                "No existen tickets pendientes.",
+                "Cola vacía",
                 JOptionPane.INFORMATION_MESSAGE
         );
-
-        seleccionarFila(siguiente.getCodigo());
+        return;
     }
+
+    String detalle
+            = "Número de ticket: "
+            + siguiente.getNroTicket()
+            + "\nID Cliente: "
+            + siguiente.getIdCliente()
+            + "\nID Vehículo: "
+            + siguiente.getIdVehiculo()
+            + "\nID Trabajador: "
+            + siguiente.getIdTrabajador()
+            + "\nEstado: "
+            + siguiente.getEstado();
+
+    JOptionPane.showMessageDialog(
+            this,
+            detalle,
+            "Siguiente ticket",
+            JOptionPane.INFORMATION_MESSAGE
+    );
+
+    seleccionarFila(siguiente.getNroTicket());
+}
 
     private void iniciarAtencion() {
         Ticket siguiente = colaAtencion.verSiguiente();
@@ -440,7 +416,7 @@ actualizarTabla();        // TODO add your handling code here:
         int respuesta = JOptionPane.showConfirmDialog(
                 this,
                 "¿Desea iniciar la atención del ticket "
-                + siguiente.getCodigo() + "?",
+                + siguiente.getNroTicket() + "?",
                 "Confirmar atención",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE
@@ -452,7 +428,7 @@ actualizarTabla();        // TODO add your handling code here:
 
         boolean estadoActualizado
                 = ticketServicio.iniciarAtencion(
-                        siguiente.getCodigo()
+                        siguiente.getNroTicket()
                 );
 
         if (!estadoActualizado) {
@@ -469,14 +445,14 @@ actualizarTabla();        // TODO add your handling code here:
 
         pilaHistorial.apilar(
                 "El ticket "
-                + atendido.getCodigo()
+                + atendido.getNroTicket()
                 + " inició su atención."
         );
 
         JOptionPane.showMessageDialog(
                 this,
                 "El ticket "
-                + atendido.getCodigo()
+                + atendido.getNroTicket()
                 + " pasó a estado En proceso.",
                 "Atención iniciada",
                 JOptionPane.INFORMATION_MESSAGE
@@ -485,49 +461,56 @@ actualizarTabla();        // TODO add your handling code here:
         actualizarTabla();
     }
 
-    private void buscarTicket() {
-        String codigo = txtCodigoBuscar.getText().trim();
+ private void buscarTicket() {
+    String nroTicket = txtCodigoBuscar
+            .getText()
+            .trim();
 
-        if (codigo.isBlank()) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Ingrese el código del ticket.",
-                    "Código obligatorio",
-                    JOptionPane.WARNING_MESSAGE
-            );
-
-            txtCodigoBuscar.requestFocus();
-            return;
-        }
-
-        Ticket ticket = colaAtencion.buscarPorCodigo(codigo);
-
-        if (ticket == null) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "El ticket no está dentro de la cola.",
-                    "Ticket no encontrado",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-            return;
-        }
-
-        seleccionarFila(ticket.getCodigo());
-
+    if (nroTicket.isBlank()) {
         JOptionPane.showMessageDialog(
                 this,
-                "Ticket encontrado.\n"
-                + "Código: " + ticket.getCodigo()
-                + "\nPlaca: "
-                + mostrarTexto(ticket.getPlacaVehiculo())
-                + "\nServicio: "
-                + mostrarTexto(ticket.getServicio())
-                + "\nEstado: "
-                + mostrarTexto(ticket.getEstado()),
-                "Resultado",
+                "Ingrese el número del ticket.",
+                "Número obligatorio",
+                JOptionPane.WARNING_MESSAGE
+        );
+
+        txtCodigoBuscar.requestFocus();
+        return;
+    }
+
+    Ticket ticket = colaAtencion.buscarPorCodigo(
+            nroTicket
+    );
+
+    if (ticket == null) {
+        JOptionPane.showMessageDialog(
+                this,
+                "El ticket no está dentro de la cola.",
+                "Ticket no encontrado",
                 JOptionPane.INFORMATION_MESSAGE
         );
+        return;
     }
+
+    seleccionarFila(ticket.getNroTicket());
+
+    JOptionPane.showMessageDialog(
+            this,
+            "Ticket encontrado.\n"
+            + "Número: "
+            + ticket.getNroTicket()
+            + "\nID Cliente: "
+            + ticket.getIdCliente()
+            + "\nID Vehículo: "
+            + ticket.getIdVehiculo()
+            + "\nID Trabajador: "
+            + ticket.getIdTrabajador()
+            + "\nEstado: "
+            + ticket.getEstado(),
+            "Resultado",
+            JOptionPane.INFORMATION_MESSAGE
+    );
+}
 
     private void seleccionarFila(String codigo) {
         for (int fila = 0;

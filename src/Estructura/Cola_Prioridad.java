@@ -65,7 +65,7 @@ public class Cola_Prioridad {
             );
         }
 
-        if (existeCodigo(ticket.getCodigo())) {
+        if (existeCodigo(ticket.getNroTicket())) {
             return false;
         }
 
@@ -132,7 +132,7 @@ public class Cola_Prioridad {
         NodoCola actual = frente;
 
         while (actual != null) {
-            String codigoActual = actual.ticket.getCodigo();
+            String codigoActual = actual.ticket.getNroTicket();
 
             if (codigoActual != null
                     && codigoActual.equalsIgnoreCase(codigoBuscado)) {
@@ -215,7 +215,7 @@ public class Cola_Prioridad {
 
         String codigoBuscado = codigo.trim();
 
-        if (frente.ticket.getCodigo()
+        if (frente.ticket.getNroTicket()
                 .equalsIgnoreCase(codigoBuscado)) {
             desencolar();
             return true;
@@ -225,7 +225,7 @@ public class Cola_Prioridad {
         NodoCola actual = frente.siguiente;
 
         while (actual != null) {
-            if (actual.ticket.getCodigo()
+            if (actual.ticket.getNroTicket()
                     .equalsIgnoreCase(codigoBuscado)) {
 
                 anterior.siguiente = actual.siguiente;
@@ -282,8 +282,8 @@ public class Cola_Prioridad {
             );
         }
 
-        if (ticket.getCodigo() == null
-                || ticket.getCodigo().isBlank()) {
+        if (ticket.getNroTicket() == null
+                || ticket.getNroTicket().isBlank()) {
             throw new IllegalArgumentException(
                     "El ticket debe tener un código."
             );
