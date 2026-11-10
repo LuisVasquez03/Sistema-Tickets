@@ -7,9 +7,7 @@ import Modelo.Ticket;
  *
  * FIFO significa First In, First Out:
  * el primer ticket que entra es el primero en ser atendido.
- *
- * @author luisv
- */
+ */ 
 public class Cola_Prioridad {
 
     /**

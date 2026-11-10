@@ -1,13 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Estructura;
 
-/**
- *
- * @author luisv
- */
+import Modelo.Ticket;
+
 public class Nodo_AVL {
-    
+    public Ticket ticket;
+   public Nodo_AVL izquierdo;
+   public Nodo_AVL derecho;
+   public int altura;
+
+   public Nodo_AVL(Ticket ticket) {
+      this.ticket = ticket;
+      this.altura = 1;
+   }
 }
