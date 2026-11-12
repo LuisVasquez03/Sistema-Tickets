@@ -1,4 +1,3 @@
-
 package Estructura;
 
 import Modelo.Ticket;
@@ -45,7 +44,8 @@ public class Arbol_AVL {
       if (nodo == null) {
          return new Nodo_AVL(ticket);
       } else {
-         int comparacion = ticket.getCodigo().compareTo(nodo.ticket.getCodigo());
+         // CORREGIDO: Usando getnroTicket() en lugar de getCodigo()
+         int comparacion = ticket.getNroTicket().compareTo(nodo.ticket.getNroTicket());
          if (comparacion < 0) {
             nodo.izquierdo = this.insertarRec(nodo.izquierdo, ticket);
          } else {
@@ -58,14 +58,15 @@ public class Arbol_AVL {
 
          nodo.altura = 1 + Math.max(this.altura(nodo.izquierdo), this.altura(nodo.derecho));
          int balance = this.obtenerBalance(nodo);
-         if (balance > 1 && ticket.getCodigo().compareTo(nodo.izquierdo.ticket.getCodigo()) < 0) {
+         
+         if (balance > 1 && ticket.getNroTicket().compareTo(nodo.izquierdo.ticket.getNroTicket()) < 0) {
             return this.rotacionDerecha(nodo);
-         } else if (balance < -1 && ticket.getCodigo().compareTo(nodo.derecho.ticket.getCodigo()) > 0) {
+         } else if (balance < -1 && ticket.getNroTicket().compareTo(nodo.derecho.ticket.getNroTicket()) > 0) {
             return this.rotacionIzquierda(nodo);
-         } else if (balance > 1 && ticket.getCodigo().compareTo(nodo.izquierdo.ticket.getCodigo()) > 0) {
+         } else if (balance > 1 && ticket.getNroTicket().compareTo(nodo.izquierdo.ticket.getNroTicket()) > 0) {
             nodo.izquierdo = this.rotacionIzquierda(nodo.izquierdo);
             return this.rotacionDerecha(nodo);
-         } else if (balance < -1 && ticket.getCodigo().compareTo(nodo.derecho.ticket.getCodigo()) < 0) {
+         } else if (balance < -1 && ticket.getNroTicket().compareTo(nodo.derecho.ticket.getNroTicket()) < 0) {
             nodo.derecho = this.rotacionDerecha(nodo.derecho);
             return this.rotacionIzquierda(nodo);
          } else {
@@ -82,7 +83,8 @@ public class Arbol_AVL {
       if (nodo == null) {
          return null;
       } else {
-         int comparacion = codigo.compareTo(nodo.ticket.getCodigo());
+         // CORREGIDO: Usando getNroTicket() en lugar de getCodigo()
+         int comparacion = codigo.compareTo(nodo.ticket.getNroTicket());
          if (comparacion == 0) {
             return nodo.ticket;
          } else {

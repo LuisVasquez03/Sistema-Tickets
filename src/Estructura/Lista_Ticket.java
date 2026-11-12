@@ -1,4 +1,3 @@
-
 package Estructura;
 
 import Modelo.Ticket;
@@ -13,24 +12,51 @@ public class Lista_Ticket {
         this.tamano = 0;
     }
     
-    public void agregar(Ticket ticket) {
+    public boolean agregar(Ticket ticket) {
+        if (ticket == null) {
+            throw new IllegalArgumentException(
+                    "El ticket no puede ser nulo."
+            );
+        }
+
+        if (ticket.getNroTicket() == null
+                || ticket.getNroTicket().isBlank()) {
+
+            throw new IllegalArgumentException(
+                    "El ticket debe tener un código."
+            );
+        }
+
+        if (buscarPorCodigo(ticket.getNroTicket()) != null) {
+            return false; // Ya existe
+        }
+
         Nodo_Ticket nuevo = new Nodo_Ticket(ticket);
+
         if (cabeza == null) {
             cabeza = nuevo;
         } else {
             Nodo_Ticket actual = cabeza;
+
             while (actual.siguiente != null) {
                 actual = actual.siguiente;
             }
+
             actual.siguiente = nuevo;
         }
+
         tamano++;
+        return true;
     }
 
     public Ticket buscarPorCodigo(String codigo) {
+        if (codigo == null || codigo.isBlank()) {
+            return null;
+        }
+        
         Nodo_Ticket actual = cabeza;
         while (actual != null) {
-            if (actual.ticket.getCodigo().equalsIgnoreCase(codigo)) {
+            if (actual.ticket.getNroTicket().equalsIgnoreCase(codigo.trim())) {
                 return actual.ticket;
             }
             actual = actual.siguiente;
@@ -38,30 +64,41 @@ public class Lista_Ticket {
         return null;
     }
 
-    public void eliminar(String codigo) {
-        if (cabeza == null) {
-            System.out.println("La lista esta vacia.");
-            return;
+    public boolean eliminar(String codigo) {
+        if (codigo == null
+                || codigo.isBlank()
+                || cabeza == null) {
+
+            return false;
         }
 
-        if (cabeza.ticket.getCodigo().equalsIgnoreCase(codigo)) {
+        String codigoBuscado = codigo.trim();
+
+        if (cabeza.ticket.getNroTicket()
+                .equalsIgnoreCase(codigoBuscado)) {
+
             cabeza = cabeza.siguiente;
-            System.out.println("Ticket eliminado.");
-            return;
+            tamano--;
+            return true;
         }
 
         Nodo_Ticket actual = cabeza;
 
-        while (actual.siguiente != null && !actual.siguiente.ticket.getCodigo().equalsIgnoreCase(codigo)) {
+        while (actual.siguiente != null
+                && !actual.siguiente.ticket.getNroTicket()
+                        .equalsIgnoreCase(codigoBuscado)) {
+
             actual = actual.siguiente;
         }
 
         if (actual.siguiente == null) {
-            System.out.println("Ticket no encontrado.");
-        } else {
-            actual.siguiente = actual.siguiente.siguiente;
-            System.out.println("Ticket eliminado.");
+            return false;
         }
+
+        actual.siguiente = actual.siguiente.siguiente;
+        tamano--;
+
+        return true;
     }
 
     public Ticket[] obtenerTodos() {
