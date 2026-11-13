@@ -1,22 +1,49 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Vista;
 
-/**
- *
- * @author luisv
- */
-public class Reporte_Java extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Reporte_Java.class.getName());
+import Servicio.Reporte_Servicio;
+import Servicio.Reporte_Servicio.Resultado;
+import Servicio.Reporte_Servicio.TipoReporte;
+import Util.ConexionBD;
+import java.awt.Component;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.regex.Pattern;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.SwingWorker;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableRowSorter;
 
-    /**
-     * Creates new form Reporte_Java
-     */
+
+public class Reporte_Java extends javax.swing.JFrame {
+
+    private static final DateTimeFormatter FMT_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter FMT_FECHA_HORA = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+    private final ModeloTabla modelo = new ModeloTabla();
+    private TableRowSorter<ModeloTabla> sorter;
+    private Resultado actual;
     public Reporte_Java() {
         initComponents();
+        configurarFormulario();
     }
 
     /**
@@ -28,47 +55,575 @@ public class Reporte_Java extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        pnlTitulo = new javax.swing.JPanel();
+        lblTitulo = new javax.swing.JLabel();
+        pnlFiltros = new javax.swing.JPanel();
+        lblReporte = new javax.swing.JLabel();
+        cboReporte = new javax.swing.JComboBox<>();
+        lblPeriodo = new javax.swing.JLabel();
+        cboPeriodo = new javax.swing.JComboBox<>();
+        lblDesde = new javax.swing.JLabel();
+        txtDesde = new javax.swing.JTextField();
+        lblHasta = new javax.swing.JLabel();
+        txtHasta = new javax.swing.JTextField();
+        btnGenerar = new javax.swing.JButton();
+        btnExportar = new javax.swing.JButton();
+        lblFiltro = new javax.swing.JLabel();
+        txtFiltro = new javax.swing.JTextField();
+        pnlResultados = new javax.swing.JPanel();
+        scrollTabla = new javax.swing.JScrollPane();
+        tabla = new javax.swing.JTable();
+        pnlResumen = new javax.swing.JPanel();
+        scrollResumen = new javax.swing.JScrollPane();
+        txtMetricas = new javax.swing.JTextArea();
+        lblEstado = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Sistema de Gestión - Carwash | Reportes");
+
+        pnlTitulo.setBackground(new java.awt.Color(51, 51, 0));
+
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(255, 255, 255));
+        lblTitulo.setText("REPORTES");
+
+        javax.swing.GroupLayout pnlTituloLayout = new javax.swing.GroupLayout(pnlTitulo);
+        pnlTitulo.setLayout(pnlTituloLayout);
+        pnlTituloLayout.setHorizontalGroup(
+            pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTituloLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(lblTitulo)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        pnlTituloLayout.setVerticalGroup(
+            pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTituloLayout.createSequentialGroup()
+                .addGap(0, 17, Short.MAX_VALUE)
+                .addComponent(lblTitulo)
+                .addGap(0, 18, Short.MAX_VALUE))
+        );
+
+        pnlFiltros.setBackground(new java.awt.Color(51, 51, 0));
+        pnlFiltros.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Filtros", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18), new java.awt.Color(204, 204, 0))); // NOI18N
+        pnlFiltros.setForeground(new java.awt.Color(242, 242, 242));
+
+        lblReporte.setForeground(new java.awt.Color(242, 242, 242));
+        lblReporte.setText("Reporte:");
+
+        cboReporte.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ingresos por día", "Ingresos por día y método de pago (cuadre de caja)", "Servicios más vendidos", "Atenciones por trabajador (por mes)", "Retrasos del servicio", "Descuentos y recargos aplicados", "Tickets por cobrar (estado actual)", "Autos en el local (estado actual)", "Catálogo de servicios" }));
+        cboReporte.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 168, 91), 2));
+        cboReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboReporteActionPerformed(evt);
+            }
+        });
+
+        lblPeriodo.setForeground(new java.awt.Color(242, 242, 242));
+        lblPeriodo.setText("Periodo rápido:");
+
+        cboPeriodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Personalizado", "Todo el historial", "Hoy", "Últimos 7 días", "Este mes" }));
+        cboPeriodo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 168, 91), 2));
+        cboPeriodo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboPeriodoActionPerformed(evt);
+            }
+        });
+
+        lblDesde.setForeground(new java.awt.Color(242, 242, 242));
+        lblDesde.setText("Desde (AAAA-MM-DD):");
+
+        txtDesde.setColumns(10);
+        txtDesde.setToolTipText("Vacío = sin límite. Ejemplo: 2026-10-01");
+        txtDesde.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 168, 91), 2));
+
+        lblHasta.setForeground(new java.awt.Color(242, 242, 242));
+        lblHasta.setText("Hasta (AAAA-MM-DD):");
+
+        txtHasta.setColumns(10);
+        txtHasta.setToolTipText("Vacío = sin límite. Ejemplo: 2026-10-31");
+        txtHasta.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 168, 91), 2));
+
+        btnGenerar.setBackground(new java.awt.Color(51, 51, 0));
+        btnGenerar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnGenerar.setForeground(new java.awt.Color(255, 255, 255));
+        btnGenerar.setText("Generar");
+        btnGenerar.setFocusPainted(false);
+        btnGenerar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarActionPerformed(evt);
+            }
+        });
+
+        btnExportar.setBackground(new java.awt.Color(51, 51, 0));
+        btnExportar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnExportar.setForeground(new java.awt.Color(255, 255, 255));
+        btnExportar.setText("Exportar CSV");
+        btnExportar.setFocusPainted(false);
+        btnExportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportarActionPerformed(evt);
+            }
+        });
+
+        lblFiltro.setForeground(new java.awt.Color(242, 242, 242));
+        lblFiltro.setText("Filtro rápido:");
+
+        txtFiltro.setToolTipText("Escriba para filtrar las filas mostradas");
+        txtFiltro.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 168, 91), 2));
+        txtFiltro.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtFiltroKeyReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlFiltrosLayout = new javax.swing.GroupLayout(pnlFiltros);
+        pnlFiltros.setLayout(pnlFiltrosLayout);
+        pnlFiltrosLayout.setHorizontalGroup(
+            pnlFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlFiltrosLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addGroup(pnlFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblReporte)
+                    .addComponent(lblDesde)
+                    .addComponent(lblFiltro))
+                .addGap(8, 8, 8)
+                .addGroup(pnlFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cboReporte, 100, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtDesde, 60, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtFiltro, 60, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(16, 16, 16)
+                .addGroup(pnlFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblPeriodo)
+                    .addComponent(lblHasta))
+                .addGap(8, 8, 8)
+                .addGroup(pnlFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cboPeriodo, 150, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtHasta, 60, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(16, 16, 16)
+                .addGroup(pnlFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnExportar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12))
+        );
+        pnlFiltrosLayout.setVerticalGroup(
+            pnlFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlFiltrosLayout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addGroup(pnlFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblReporte)
+                    .addComponent(cboReporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPeriodo)
+                    .addComponent(cboPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(pnlFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblDesde)
+                    .addComponent(txtDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblHasta)
+                    .addComponent(txtHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGenerar))
+                .addGap(8, 8, 8)
+                .addGroup(pnlFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFiltro)
+                    .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnExportar))
+                .addGap(8, 8, 8))
+        );
+
+        pnlResultados.setBackground(new java.awt.Color(51, 51, 0));
+        pnlResultados.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Resultados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(242, 242, 242))); // NOI18N
+        pnlResultados.setForeground(new java.awt.Color(242, 242, 242));
+
+        tabla.setFillsViewportHeight(true);
+        scrollTabla.setViewportView(tabla);
+
+        javax.swing.GroupLayout pnlResultadosLayout = new javax.swing.GroupLayout(pnlResultados);
+        pnlResultados.setLayout(pnlResultadosLayout);
+        pnlResultadosLayout.setHorizontalGroup(
+            pnlResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlResultadosLayout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addComponent(scrollTabla, javax.swing.GroupLayout.DEFAULT_SIZE, 950, Short.MAX_VALUE)
+                .addGap(8, 8, 8))
+        );
+        pnlResultadosLayout.setVerticalGroup(
+            pnlResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlResultadosLayout.createSequentialGroup()
+                .addGap(4, 4, 4)
+                .addComponent(scrollTabla, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+                .addGap(8, 8, 8))
+        );
+
+        pnlResumen.setBackground(new java.awt.Color(51, 51, 0));
+        pnlResumen.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Resumen del reporte", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(242, 242, 242))); // NOI18N
+        pnlResumen.setForeground(new java.awt.Color(242, 242, 242));
+
+        txtMetricas.setEditable(false);
+        txtMetricas.setFont(new java.awt.Font("Consolas", 0, 13)); // NOI18N
+        txtMetricas.setColumns(20);
+        txtMetricas.setRows(5);
+        scrollResumen.setViewportView(txtMetricas);
+
+        javax.swing.GroupLayout pnlResumenLayout = new javax.swing.GroupLayout(pnlResumen);
+        pnlResumen.setLayout(pnlResumenLayout);
+        pnlResumenLayout.setHorizontalGroup(
+            pnlResumenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlResumenLayout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addComponent(scrollResumen, javax.swing.GroupLayout.DEFAULT_SIZE, 950, Short.MAX_VALUE)
+                .addGap(8, 8, 8))
+        );
+        pnlResumenLayout.setVerticalGroup(
+            pnlResumenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlResumenLayout.createSequentialGroup()
+                .addGap(4, 4, 4)
+                .addComponent(scrollResumen, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                .addGap(8, 8, 8))
+        );
+
+        lblEstado.setText("Seleccione un reporte y pulse «Generar».");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(pnlTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlFiltros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlResultados, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlResumen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblEstado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(12, 12, 12))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(pnlFiltros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(pnlResultados, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(10, 10, 10)
+                .addComponent(pnlResumen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(lblEstado)
+                .addGap(8, 8, 8))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+    private void cboReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboReporteActionPerformed
+        actualizarCamposFecha();
+    }//GEN-LAST:event_cboReporteActionPerformed
+
+    private void cboPeriodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboPeriodoActionPerformed
+        aplicarPeriodoRapido();
+    }//GEN-LAST:event_cboPeriodoActionPerformed
+
+    private void btnGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarActionPerformed
+        generar();
+    }//GEN-LAST:event_btnGenerarActionPerformed
+
+    private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
+        exportarCsv();
+    }//GEN-LAST:event_btnExportarActionPerformed
+
+    private void txtFiltroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltroKeyReleased
+        aplicarFiltroRapido();
+    }//GEN-LAST:event_txtFiltroKeyReleased
+
+    private void configurarFormulario() {
+  
+        TipoReporte[] tipos = TipoReporte.values();
+        String[] titulosReportes = new String[tipos.length];
+        for (int i = 0; i < tipos.length; i++) {
+            titulosReportes[i] = tipos[i].getTitulo();
+        }
+        cboReporte.setModel(new DefaultComboBoxModel<>(titulosReportes));
+
+        tabla.setModel(modelo);
+        tabla.setRowHeight(24);
+        tabla.getTableHeader().setReorderingAllowed(false);
+        sorter = new TableRowSorter<>(modelo);
+        tabla.setRowSorter(sorter);
+        FormatoRenderer renderer = new FormatoRenderer();
+        tabla.setDefaultRenderer(BigDecimal.class, renderer);
+        tabla.setDefaultRenderer(Long.class, renderer);
+        tabla.setDefaultRenderer(LocalDate.class, renderer);
+        tabla.setDefaultRenderer(LocalDateTime.class, renderer);
+
+        setLocationRelativeTo(null);
+        actualizarCamposFecha();
+    }
+
+    private TipoReporte tipoSeleccionado() {
+        return TipoReporte.values()[cboReporte.getSelectedIndex()];
+    }
+
+    private void actualizarCamposFecha() {
+        boolean usa = tipoSeleccionado().usaFechas();
+        txtDesde.setEnabled(usa);
+        txtHasta.setEnabled(usa);
+        cboPeriodo.setEnabled(usa);
+    }
+
+    private void aplicarPeriodoRapido() {
+        String op = (String) cboPeriodo.getSelectedItem();
+        LocalDate hoy = LocalDate.now();
+        if ("Todo el historial".equals(op)) {
+            txtDesde.setText("");
+            txtHasta.setText("");
+        } else if ("Hoy".equals(op)) {
+            txtDesde.setText(hoy.toString());
+            txtHasta.setText(hoy.toString());
+        } else if ("Últimos 7 días".equals(op)) {
+            txtDesde.setText(hoy.minusDays(6).toString());
+            txtHasta.setText(hoy.toString());
+        } else if ("Este mes".equals(op)) {
+            txtDesde.setText(hoy.withDayOfMonth(1).toString());
+            txtHasta.setText(hoy.toString());
+        }
+    }
+
+    private void aplicarFiltroRapido() {
+        String t = txtFiltro.getText().trim();
+        sorter.setRowFilter(t.isEmpty() ? null : RowFilter.regexFilter("(?i)" + Pattern.quote(t)));
+    }
+
+    private LocalDate leerFecha(String texto) {
+        String t = texto.trim();
+        return t.isEmpty() ? null : LocalDate.parse(t);
+    }
+
+    /** Valida las fechas, consulta en segundo plano y muestra el resultado. */
+    private void generar() {
+        final TipoReporte tipo = tipoSeleccionado();
+        LocalDate d0 = null, h0 = null;
+        if (tipo.usaFechas()) {
+            try {
+                d0 = leerFecha(txtDesde.getText());
+                h0 = leerFecha(txtHasta.getText());
+            } catch (DateTimeParseException ex) {
+                JOptionPane.showMessageDialog(this, "Escriba las fechas con el formato AAAA-MM-DD (ejemplo: 2026-10-19).",
+                        "Fecha no válida", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            if (d0 != null && h0 != null && d0.isAfter(h0)) {
+                JOptionPane.showMessageDialog(this, "La fecha inicial no puede ser posterior a la final.",
+                        "Rango no válido", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+        final LocalDate desde = d0, hasta = h0;
+
+        btnGenerar.setEnabled(false);
+        lblEstado.setText("Consultando la base de datos...");
+
+        new SwingWorker<Resultado, Void>() {
+            @Override
+            protected Resultado doInBackground() throws Exception {
+                return new Reporte_Servicio(obtenerConexion()).generar(tipo, desde, hasta);
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    mostrar(get());
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                } catch (ExecutionException ex) {
+                    Throwable causa = ex.getCause() != null ? ex.getCause() : ex;
+                    lblEstado.setText("No se pudo generar el reporte.");
+                    JOptionPane.showMessageDialog(Reporte_Java.this,
+                            "No se pudo generar el reporte:\n" + causa.getMessage(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                } finally {
+                    btnGenerar.setEnabled(true);
                 }
             }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        }.execute();
+    }
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Reporte_Java().setVisible(true));
+ 
+   private Connection obtenerConexion() {
+    return ConexionBD.conn();
+}
+    private void mostrar(Resultado r) {
+        actual = r;
+        txtFiltro.setText("");
+        modelo.cargar(r);
+        ajustarAnchoColumnas();
+
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, String> e : r.getMetricas().entrySet()) {
+            sb.append(String.format("  %-34s %s%n", e.getKey() + ":", e.getValue()));
+        }
+        txtMetricas.setText(sb.toString());
+        txtMetricas.setCaretPosition(0);
+        lblEstado.setText(r.getTitulo() + " — " + r.getFilas().size() + " fila(s).");
+    }
+
+    private void ajustarAnchoColumnas() {
+        for (int c = 0; c < tabla.getColumnCount(); c++) {
+            int ancho = tabla.getTableHeader().getDefaultRenderer()
+                    .getTableCellRendererComponent(tabla, tabla.getColumnName(c), false, false, 0, c)
+                    .getPreferredSize().width;
+            int filas = Math.min(tabla.getRowCount(), 50);
+            for (int f = 0; f < filas; f++) {
+                Component comp = tabla.prepareRenderer(tabla.getCellRenderer(f, c), f, c);
+                ancho = Math.max(ancho, comp.getPreferredSize().width);
+            }
+            tabla.getColumnModel().getColumn(c).setPreferredWidth(Math.min(ancho + 16, 420));
+        }
+    }
+
+
+    private void exportarCsv() {
+        if (actual == null || tabla.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Primero genere un reporte con resultados.",
+                    "Nada que exportar", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileNameExtensionFilter("Archivo CSV (*.csv)", "csv"));
+        fc.setSelectedFile(new File("reporte_" + LocalDate.now() + ".csv"));
+        if (fc.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) return;
+
+        File destino = fc.getSelectedFile();
+        if (!destino.getName().toLowerCase().endsWith(".csv")) {
+            destino = new File(destino.getParentFile(), destino.getName() + ".csv");
+        }
+        if (destino.exists() && JOptionPane.showConfirmDialog(this, "El archivo ya existe. ¿Reemplazarlo?",
+                "Confirmar", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        try (Writer w = new OutputStreamWriter(new java.io.FileOutputStream(destino), StandardCharsets.UTF_8)) {
+            w.write('\uFEFF');
+            w.write(actual.getTitulo() + "\r\n");
+            List<String> cab = new ArrayList<>();
+            for (int c = 0; c < tabla.getColumnCount(); c++) cab.add(csv(tabla.getColumnName(c)));
+            w.write(String.join(",", cab) + "\r\n");
+
+            // Se exporta lo que el usuario ve: respeta el orden y el filtro rápido.
+            for (int f = 0; f < tabla.getRowCount(); f++) {
+                List<String> campos = new ArrayList<>();
+                for (int c = 0; c < tabla.getColumnCount(); c++) {
+                    campos.add(csv(texto(tabla.getValueAt(f, c))));
+                }
+                w.write(String.join(",", campos) + "\r\n");
+            }
+            w.write("\r\nResumen\r\n");
+            for (Map.Entry<String, String> e : actual.getMetricas().entrySet()) {
+                w.write(csv(e.getKey().trim()) + "," + csv(e.getValue()) + "\r\n");
+            }
+            lblEstado.setText("Exportado: " + destino.getAbsolutePath());
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo guardar el archivo:\n" + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private static String texto(Object v) {
+        if (v == null) return "";
+        if (v instanceof BigDecimal) return ((BigDecimal) v).setScale(2, RoundingMode.HALF_UP).toPlainString();
+        if (v instanceof LocalDate) return ((LocalDate) v).format(FMT_FECHA);
+        if (v instanceof LocalDateTime) return ((LocalDateTime) v).format(FMT_FECHA_HORA);
+        return v.toString();
+    }
+
+    /** Escapa un campo CSV y evita que Excel lo interprete como fórmula. */
+    private static String csv(String s) {
+        if (!s.isEmpty() && "=+-@".indexOf(s.charAt(0)) >= 0 && !s.matches("-?\\d+(\\.\\d+)?")) {
+            s = "'" + s;
+        }
+        if (s.contains(",") || s.contains("\"") || s.contains("\n") || s.contains("\r")) {
+            s = "\"" + s.replace("\"", "\"\"") + "\"";
+        }
+        return s;
+    }
+
+    private static class ModeloTabla extends AbstractTableModel {
+        private String[] columnas = new String[0];
+        private List<Object[]> filas = new ArrayList<>();
+
+        void cargar(Resultado r) {
+            this.columnas = r.getColumnas();
+            this.filas = r.getFilas();
+            fireTableStructureChanged();
+        }
+
+        @Override public int getRowCount() { return filas.size(); }
+        @Override public int getColumnCount() { return columnas.length; }
+        @Override public String getColumnName(int c) { return columnas[c]; }
+        @Override public Object getValueAt(int f, int c) { return filas.get(f)[c]; }
+
+  
+        @Override
+        public Class<?> getColumnClass(int c) {
+            for (Object[] fila : filas) {
+                if (fila[c] != null) return fila[c].getClass();
+            }
+            return Object.class;
+        }
+    }
+
+    private static class FormatoRenderer extends DefaultTableCellRenderer {
+        @Override
+        protected void setValue(Object v) {
+            if (v instanceof BigDecimal) {
+                setText(((BigDecimal) v).setScale(2, RoundingMode.HALF_UP).toPlainString());
+                setHorizontalAlignment(RIGHT);
+            } else if (v instanceof Long) {
+                setText(v.toString());
+                setHorizontalAlignment(RIGHT);
+            } else if (v instanceof LocalDate) {
+                setText(((LocalDate) v).format(FMT_FECHA));
+                setHorizontalAlignment(CENTER);
+            } else if (v instanceof LocalDateTime) {
+                setText(((LocalDateTime) v).format(FMT_FECHA_HORA));
+                setHorizontalAlignment(CENTER);
+            } else {
+                super.setValue(v);
+                setHorizontalAlignment(LEFT);
+            }
+        }
+    }
+
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Reporte_Java().setVisible(true);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnExportar;
+    private javax.swing.JButton btnGenerar;
+    private javax.swing.JComboBox<String> cboPeriodo;
+    private javax.swing.JComboBox<String> cboReporte;
+    private javax.swing.JLabel lblDesde;
+    private javax.swing.JLabel lblEstado;
+    private javax.swing.JLabel lblFiltro;
+    private javax.swing.JLabel lblHasta;
+    private javax.swing.JLabel lblPeriodo;
+    private javax.swing.JLabel lblReporte;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JPanel pnlFiltros;
+    private javax.swing.JPanel pnlResultados;
+    private javax.swing.JPanel pnlResumen;
+    private javax.swing.JPanel pnlTitulo;
+    private javax.swing.JScrollPane scrollResumen;
+    private javax.swing.JScrollPane scrollTabla;
+    private javax.swing.JTable tabla;
+    private javax.swing.JTextField txtDesde;
+    private javax.swing.JTextField txtFiltro;
+    private javax.swing.JTextField txtHasta;
+    private javax.swing.JTextArea txtMetricas;
     // End of variables declaration//GEN-END:variables
 }
+
