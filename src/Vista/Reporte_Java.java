@@ -397,8 +397,6 @@ public class Reporte_Java extends javax.swing.JFrame {
         String t = texto.trim();
         return t.isEmpty() ? null : LocalDate.parse(t);
     }
-
-    /** Valida las fechas, consulta en segundo plano y muestra el resultado. */
     private void generar() {
         final TipoReporte tipo = tipoSeleccionado();
         LocalDate d0 = null, h0 = null;
@@ -508,7 +506,7 @@ public class Reporte_Java extends javax.swing.JFrame {
             for (int c = 0; c < tabla.getColumnCount(); c++) cab.add(csv(tabla.getColumnName(c)));
             w.write(String.join(",", cab) + "\r\n");
 
-            // Se exporta lo que el usuario ve: respeta el orden y el filtro rápido.
+         
             for (int f = 0; f < tabla.getRowCount(); f++) {
                 List<String> campos = new ArrayList<>();
                 for (int c = 0; c < tabla.getColumnCount(); c++) {
@@ -535,7 +533,7 @@ public class Reporte_Java extends javax.swing.JFrame {
         return v.toString();
     }
 
-    /** Escapa un campo CSV y evita que Excel lo interprete como fórmula. */
+   
     private static String csv(String s) {
         if (!s.isEmpty() && "=+-@".indexOf(s.charAt(0)) >= 0 && !s.matches("-?\\d+(\\.\\d+)?")) {
             s = "'" + s;
