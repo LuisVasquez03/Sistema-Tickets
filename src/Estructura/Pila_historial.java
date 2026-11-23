@@ -46,6 +46,16 @@ public class Pila_historial {
         cima = nuevo;
         tamano++;
     }
+    
+    public String[] obtenerElementos() {
+        String[] elementos = new String[tamano];
+        NodoHistorial actual = cima;
+        for (int i = tamano - 1; i >= 0 && actual != null; i--) {
+            elementos[i] = actual.evento;
+            actual = actual.siguiente;
+        }
+        return elementos;
+    }
 
     /**
      * Consulta el evento más reciente sin eliminarlo.

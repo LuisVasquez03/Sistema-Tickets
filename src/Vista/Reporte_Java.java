@@ -43,7 +43,9 @@ public class Reporte_Java extends javax.swing.JFrame {
     private Resultado actual;
     public Reporte_Java() {
         initComponents();
+        getContentPane().setBackground(new java.awt.Color(153, 102, 0));
         configurarFormulario();
+        getContentPane().setBackground(new java.awt.Color(153, 102, 0));
     }
 
     /**
@@ -77,14 +79,17 @@ public class Reporte_Java extends javax.swing.JFrame {
         scrollResumen = new javax.swing.JScrollPane();
         txtMetricas = new javax.swing.JTextArea();
         lblEstado = new javax.swing.JLabel();
+        btn_volver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Sistema de Gestión - Carwash | Reportes");
+        setBackground(new java.awt.Color(0, 0, 0));
 
-        pnlTitulo.setBackground(new java.awt.Color(51, 51, 0));
+        pnlTitulo.setBackground(new java.awt.Color(0, 0, 0));
 
+        lblTitulo.setBackground(new java.awt.Color(153, 102, 0));
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblTitulo.setForeground(new java.awt.Color(255, 255, 255));
+        lblTitulo.setForeground(new java.awt.Color(153, 102, 0));
         lblTitulo.setText("REPORTES");
 
         javax.swing.GroupLayout pnlTituloLayout = new javax.swing.GroupLayout(pnlTitulo);
@@ -104,49 +109,50 @@ public class Reporte_Java extends javax.swing.JFrame {
                 .addGap(0, 18, Short.MAX_VALUE))
         );
 
-        pnlFiltros.setBackground(new java.awt.Color(51, 51, 0));
-        pnlFiltros.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Filtros", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18), new java.awt.Color(204, 204, 0))); // NOI18N
+        pnlFiltros.setBackground(new java.awt.Color(0, 0, 0));
+        pnlFiltros.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Filtros", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18), new java.awt.Color(153, 102, 0))); // NOI18N
         pnlFiltros.setForeground(new java.awt.Color(242, 242, 242));
 
-        lblReporte.setForeground(new java.awt.Color(242, 242, 242));
+        lblReporte.setForeground(new java.awt.Color(153, 102, 0));
         lblReporte.setText("Reporte:");
 
         cboReporte.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ingresos por día", "Ingresos por día y método de pago (cuadre de caja)", "Servicios más vendidos", "Atenciones por trabajador (por mes)", "Retrasos del servicio", "Descuentos y recargos aplicados", "Tickets por cobrar (estado actual)", "Autos en el local (estado actual)", "Catálogo de servicios" }));
-        cboReporte.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 168, 91), 2));
+        cboReporte.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 102, 0), 2));
+        cboReporte.setFocusable(false);
         cboReporte.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboReporteActionPerformed(evt);
             }
         });
 
-        lblPeriodo.setForeground(new java.awt.Color(242, 242, 242));
+        lblPeriodo.setForeground(new java.awt.Color(153, 102, 0));
         lblPeriodo.setText("Periodo rápido:");
 
         cboPeriodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Personalizado", "Todo el historial", "Hoy", "Últimos 7 días", "Este mes" }));
-        cboPeriodo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 168, 91), 2));
+        cboPeriodo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 102, 0), 2));
+        cboPeriodo.setFocusable(false);
         cboPeriodo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboPeriodoActionPerformed(evt);
             }
         });
 
-        lblDesde.setForeground(new java.awt.Color(242, 242, 242));
+        lblDesde.setForeground(new java.awt.Color(153, 102, 0));
         lblDesde.setText("Desde (AAAA-MM-DD):");
 
         txtDesde.setColumns(10);
         txtDesde.setToolTipText("Vacío = sin límite. Ejemplo: 2026-10-01");
-        txtDesde.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 168, 91), 2));
+        txtDesde.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 102, 0), 2));
 
-        lblHasta.setForeground(new java.awt.Color(242, 242, 242));
+        lblHasta.setForeground(new java.awt.Color(153, 102, 0));
         lblHasta.setText("Hasta (AAAA-MM-DD):");
 
         txtHasta.setColumns(10);
         txtHasta.setToolTipText("Vacío = sin límite. Ejemplo: 2026-10-31");
-        txtHasta.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 168, 91), 2));
+        txtHasta.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 102, 0), 2));
 
-        btnGenerar.setBackground(new java.awt.Color(51, 51, 0));
+        btnGenerar.setBackground(new java.awt.Color(153, 102, 0));
         btnGenerar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnGenerar.setForeground(new java.awt.Color(255, 255, 255));
         btnGenerar.setText("Generar");
         btnGenerar.setFocusPainted(false);
         btnGenerar.addActionListener(new java.awt.event.ActionListener() {
@@ -155,9 +161,8 @@ public class Reporte_Java extends javax.swing.JFrame {
             }
         });
 
-        btnExportar.setBackground(new java.awt.Color(51, 51, 0));
+        btnExportar.setBackground(new java.awt.Color(153, 102, 0));
         btnExportar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnExportar.setForeground(new java.awt.Color(255, 255, 255));
         btnExportar.setText("Exportar CSV");
         btnExportar.setFocusPainted(false);
         btnExportar.addActionListener(new java.awt.event.ActionListener() {
@@ -166,11 +171,11 @@ public class Reporte_Java extends javax.swing.JFrame {
             }
         });
 
-        lblFiltro.setForeground(new java.awt.Color(242, 242, 242));
+        lblFiltro.setForeground(new java.awt.Color(153, 102, 0));
         lblFiltro.setText("Filtro rápido:");
 
         txtFiltro.setToolTipText("Escriba para filtrar las filas mostradas");
-        txtFiltro.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 168, 91), 2));
+        txtFiltro.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 102, 0), 2));
         txtFiltro.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtFiltroKeyReleased(evt);
@@ -230,9 +235,8 @@ public class Reporte_Java extends javax.swing.JFrame {
                 .addGap(8, 8, 8))
         );
 
-        pnlResultados.setBackground(new java.awt.Color(51, 51, 0));
-        pnlResultados.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Resultados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(242, 242, 242))); // NOI18N
-        pnlResultados.setForeground(new java.awt.Color(242, 242, 242));
+        pnlResultados.setBackground(new java.awt.Color(0, 0, 0));
+        pnlResultados.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Resultados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(153, 102, 0))); // NOI18N
 
         tabla.setFillsViewportHeight(true);
         scrollTabla.setViewportView(tabla);
@@ -254,8 +258,8 @@ public class Reporte_Java extends javax.swing.JFrame {
                 .addGap(8, 8, 8))
         );
 
-        pnlResumen.setBackground(new java.awt.Color(51, 51, 0));
-        pnlResumen.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Resumen del reporte", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(242, 242, 242))); // NOI18N
+        pnlResumen.setBackground(new java.awt.Color(0, 0, 0));
+        pnlResumen.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Resumen del reporte", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(153, 102, 0))); // NOI18N
         pnlResumen.setForeground(new java.awt.Color(242, 242, 242));
 
         txtMetricas.setEditable(false);
@@ -281,7 +285,18 @@ public class Reporte_Java extends javax.swing.JFrame {
                 .addGap(8, 8, 8))
         );
 
+        lblEstado.setBackground(new java.awt.Color(153, 102, 0));
         lblEstado.setText("Seleccione un reporte y pulse «Generar».");
+
+        btn_volver.setBackground(new java.awt.Color(0, 0, 0));
+        btn_volver.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btn_volver.setForeground(new java.awt.Color(153, 102, 0));
+        btn_volver.setText("Volver");
+        btn_volver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_volverActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -294,7 +309,10 @@ public class Reporte_Java extends javax.swing.JFrame {
                     .addComponent(pnlFiltros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnlResultados, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnlResumen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblEstado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 793, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_volver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(12, 12, 12))
         );
         layout.setVerticalGroup(
@@ -307,9 +325,14 @@ public class Reporte_Java extends javax.swing.JFrame {
                 .addComponent(pnlResultados, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(10, 10, 10)
                 .addComponent(pnlResumen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(lblEstado)
-                .addGap(8, 8, 8))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(lblEstado))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(btn_volver, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
         pack();
@@ -334,6 +357,25 @@ public class Reporte_Java extends javax.swing.JFrame {
     private void txtFiltroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltroKeyReleased
         aplicarFiltroRapido();
     }//GEN-LAST:event_txtFiltroKeyReleased
+
+    private void btn_volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_volverActionPerformed
+        boolean hayPrincipalVisible = false;
+        for (java.awt.Window w : java.awt.Window.getWindows()) {
+            if (w instanceof Principal p && p.isDisplayable() && p.isVisible()) {
+                p.setExtendedState(MAXIMIZED_BOTH);
+                p.toFront();
+                hayPrincipalVisible = true;
+                break;
+            }
+        }
+        if (!hayPrincipalVisible) {
+            Principal principal = new Principal();
+            principal.setExtendedState(MAXIMIZED_BOTH);
+            principal.setLocationRelativeTo(null);
+            principal.setVisible(true);
+        }
+        this.dispose();
+    }//GEN-LAST:event_btn_volverActionPerformed
 
     private void configurarFormulario() {
   
@@ -368,6 +410,11 @@ public class Reporte_Java extends javax.swing.JFrame {
         txtDesde.setEnabled(usa);
         txtHasta.setEnabled(usa);
         cboPeriodo.setEnabled(usa);
+        if (!usa) {
+            txtDesde.setText("");
+            txtHasta.setText("");
+            cboPeriodo.setSelectedIndex(0);
+        }
     }
 
     private void aplicarPeriodoRapido() {
@@ -450,18 +497,25 @@ public class Reporte_Java extends javax.swing.JFrame {
     return ConexionBD.conn();
 }
     private void mostrar(Resultado r) {
+        if (r == null) {
+            lblEstado.setText("No se obtuvieron datos para el reporte.");
+            return;
+        }
         actual = r;
         txtFiltro.setText("");
         modelo.cargar(r);
         ajustarAnchoColumnas();
 
         StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, String> e : r.getMetricas().entrySet()) {
-            sb.append(String.format("  %-34s %s%n", e.getKey() + ":", e.getValue()));
+        if (r.getMetricas() != null) {
+            for (Map.Entry<String, String> e : r.getMetricas().entrySet()) {
+                sb.append(String.format("  %-34s %s%n", e.getKey() + ":", e.getValue()));
+            }
         }
         txtMetricas.setText(sb.toString());
         txtMetricas.setCaretPosition(0);
-        lblEstado.setText(r.getTitulo() + " — " + r.getFilas().size() + " fila(s).");
+        int cantFilas = r.getFilas() != null ? r.getFilas().size() : 0;
+        lblEstado.setText(r.getTitulo() + " — " + cantFilas + " fila(s).");
     }
 
     private void ajustarAnchoColumnas() {
@@ -602,6 +656,7 @@ public class Reporte_Java extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExportar;
     private javax.swing.JButton btnGenerar;
+    private javax.swing.JButton btn_volver;
     private javax.swing.JComboBox<String> cboPeriodo;
     private javax.swing.JComboBox<String> cboReporte;
     private javax.swing.JLabel lblDesde;

@@ -3,7 +3,7 @@ package Estructura;
 import Modelo.Ticket;
 
 public class Lista_Ticket {
-    
+
     private Nodo_Ticket cabeza;
     private int tamano;
 
@@ -11,7 +11,7 @@ public class Lista_Ticket {
         this.cabeza = null;
         this.tamano = 0;
     }
-    
+
     public boolean agregar(Ticket ticket) {
         if (ticket == null) {
             throw new IllegalArgumentException(
@@ -21,14 +21,13 @@ public class Lista_Ticket {
 
         if (ticket.getNroTicket() == null
                 || ticket.getNroTicket().isBlank()) {
-
             throw new IllegalArgumentException(
                     "El ticket debe tener un código."
             );
         }
 
         if (buscarPorCodigo(ticket.getNroTicket()) != null) {
-            return false; // Ya existe
+            return false;
         }
 
         Nodo_Ticket nuevo = new Nodo_Ticket(ticket);
@@ -53,14 +52,19 @@ public class Lista_Ticket {
         if (codigo == null || codigo.isBlank()) {
             return null;
         }
-        
+
+        String codigoBuscado = codigo.trim();
         Nodo_Ticket actual = cabeza;
+
         while (actual != null) {
-            if (actual.ticket.getNroTicket().equalsIgnoreCase(codigo.trim())) {
+            if (actual.ticket != null
+                    && actual.ticket.getNroTicket() != null
+                    && actual.ticket.getNroTicket().trim().equalsIgnoreCase(codigoBuscado)) {
                 return actual.ticket;
             }
             actual = actual.siguiente;
         }
+
         return null;
     }
 
@@ -68,15 +72,14 @@ public class Lista_Ticket {
         if (codigo == null
                 || codigo.isBlank()
                 || cabeza == null) {
-
             return false;
         }
 
         String codigoBuscado = codigo.trim();
 
-        if (cabeza.ticket.getNroTicket()
-                .equalsIgnoreCase(codigoBuscado)) {
-
+        if (cabeza.ticket != null
+                && cabeza.ticket.getNroTicket() != null
+                && cabeza.ticket.getNroTicket().trim().equalsIgnoreCase(codigoBuscado)) {
             cabeza = cabeza.siguiente;
             tamano--;
             return true;
@@ -84,31 +87,32 @@ public class Lista_Ticket {
 
         Nodo_Ticket actual = cabeza;
 
-        while (actual.siguiente != null
-                && !actual.siguiente.ticket.getNroTicket()
-                        .equalsIgnoreCase(codigoBuscado)) {
+        while (actual.siguiente != null) {
+            Ticket siguienteTicket = actual.siguiente.ticket;
+            if (siguienteTicket != null
+                    && siguienteTicket.getNroTicket() != null
+                    && siguienteTicket.getNroTicket().trim().equalsIgnoreCase(codigoBuscado)) {
 
+                actual.siguiente = actual.siguiente.siguiente;
+                tamano--;
+                return true;
+            }
             actual = actual.siguiente;
         }
 
-        if (actual.siguiente == null) {
-            return false;
-        }
-
-        actual.siguiente = actual.siguiente.siguiente;
-        tamano--;
-
-        return true;
+        return false;
     }
 
     public Ticket[] obtenerTodos() {
         Ticket[] arreglo = new Ticket[tamano];
         Nodo_Ticket actual = cabeza;
         int i = 0;
+
         while (actual != null) {
             arreglo[i++] = actual.ticket;
             actual = actual.siguiente;
         }
+
         return arreglo;
     }
 

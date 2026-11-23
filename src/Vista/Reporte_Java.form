@@ -4,6 +4,9 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
     <Property name="title" type="java.lang.String" value="Sistema de Gesti&#xf3;n - Carwash | Reportes"/>
+    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+      <Color blue="0" green="0" red="0" type="rgb"/>
+    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -31,7 +34,11 @@
                   <Component id="pnlFiltros" alignment="0" max="32767" attributes="0"/>
                   <Component id="pnlResultados" alignment="0" max="32767" attributes="0"/>
                   <Component id="pnlResumen" alignment="0" max="32767" attributes="0"/>
-                  <Component id="lblEstado" alignment="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="lblEstado" min="-2" pref="793" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="btn_volver" max="32767" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
           </Group>
@@ -47,9 +54,17 @@
               <Component id="pnlResultados" max="32767" attributes="0"/>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
               <Component id="pnlResumen" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-              <Component id="lblEstado" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                      <Component id="lblEstado" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                      <Component id="btn_volver" min="-2" pref="21" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -58,7 +73,7 @@
     <Container class="javax.swing.JPanel" name="pnlTitulo">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="33" red="33" type="rgb"/>
+          <Color blue="0" green="0" red="0" type="rgb"/>
         </Property>
       </Properties>
 
@@ -85,11 +100,14 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="lblTitulo">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="66" red="99" type="rgb"/>
+            </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="18" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+              <Color blue="0" green="66" red="99" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="REPORTES"/>
           </Properties>
@@ -99,13 +117,13 @@
     <Container class="javax.swing.JPanel" name="pnlFiltros">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="33" red="33" type="rgb"/>
+          <Color blue="0" green="0" red="0" type="rgb"/>
         </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
             <TitledBorder title="Filtros">
               <Font PropertyName="font" name="Segoe UI" size="18" style="1"/>
-              <Color PropertyName="color" blue="0" green="cc" red="cc" type="rgb"/>
+              <Color PropertyName="color" blue="0" green="66" red="99" type="rgb"/>
             </TitledBorder>
           </Border>
         </Property>
@@ -182,7 +200,7 @@
         <Component class="javax.swing.JLabel" name="lblReporte">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="f2" green="f2" red="f2" type="rgb"/>
+              <Color blue="0" green="66" red="99" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Reporte:"/>
           </Properties>
@@ -205,10 +223,11 @@
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder thickness="2">
-                  <Color PropertyName="color" blue="5b" green="a8" red="cc" type="rgb"/>
+                  <Color PropertyName="color" blue="0" green="66" red="99" type="rgb"/>
                 </LineBorder>
               </Border>
             </Property>
+            <Property name="focusable" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboReporteActionPerformed"/>
@@ -220,7 +239,7 @@
         <Component class="javax.swing.JLabel" name="lblPeriodo">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="f2" green="f2" red="f2" type="rgb"/>
+              <Color blue="0" green="66" red="99" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Periodo r&#xe1;pido:"/>
           </Properties>
@@ -239,10 +258,11 @@
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder thickness="2">
-                  <Color PropertyName="color" blue="5b" green="a8" red="cc" type="rgb"/>
+                  <Color PropertyName="color" blue="0" green="66" red="99" type="rgb"/>
                 </LineBorder>
               </Border>
             </Property>
+            <Property name="focusable" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboPeriodoActionPerformed"/>
@@ -254,7 +274,7 @@
         <Component class="javax.swing.JLabel" name="lblDesde">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="f2" green="f2" red="f2" type="rgb"/>
+              <Color blue="0" green="66" red="99" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Desde (AAAA-MM-DD):"/>
           </Properties>
@@ -266,7 +286,7 @@
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder thickness="2">
-                  <Color PropertyName="color" blue="5b" green="a8" red="cc" type="rgb"/>
+                  <Color PropertyName="color" blue="0" green="66" red="99" type="rgb"/>
                 </LineBorder>
               </Border>
             </Property>
@@ -275,7 +295,7 @@
         <Component class="javax.swing.JLabel" name="lblHasta">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="f2" green="f2" red="f2" type="rgb"/>
+              <Color blue="0" green="66" red="99" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Hasta (AAAA-MM-DD):"/>
           </Properties>
@@ -287,7 +307,7 @@
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder thickness="2">
-                  <Color PropertyName="color" blue="5b" green="a8" red="cc" type="rgb"/>
+                  <Color PropertyName="color" blue="0" green="66" red="99" type="rgb"/>
                 </LineBorder>
               </Border>
             </Property>
@@ -296,13 +316,10 @@
         <Component class="javax.swing.JButton" name="btnGenerar">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="33" red="33" type="rgb"/>
+              <Color blue="0" green="66" red="99" type="rgb"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="13" style="1"/>
-            </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Generar"/>
             <Property name="focusPainted" type="boolean" value="false"/>
@@ -314,13 +331,10 @@
         <Component class="javax.swing.JButton" name="btnExportar">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="33" red="33" type="rgb"/>
+              <Color blue="0" green="66" red="99" type="rgb"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="13" style="1"/>
-            </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Exportar CSV"/>
             <Property name="focusPainted" type="boolean" value="false"/>
@@ -332,7 +346,7 @@
         <Component class="javax.swing.JLabel" name="lblFiltro">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="f2" green="f2" red="f2" type="rgb"/>
+              <Color blue="0" green="66" red="99" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Filtro r&#xe1;pido:"/>
           </Properties>
@@ -343,7 +357,7 @@
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder thickness="2">
-                  <Color PropertyName="color" blue="5b" green="a8" red="cc" type="rgb"/>
+                  <Color PropertyName="color" blue="0" green="66" red="99" type="rgb"/>
                 </LineBorder>
               </Border>
             </Property>
@@ -357,17 +371,14 @@
     <Container class="javax.swing.JPanel" name="pnlResultados">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="33" red="33" type="rgb"/>
+          <Color blue="0" green="0" red="0" type="rgb"/>
         </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
             <TitledBorder title="Resultados">
-              <Color PropertyName="color" blue="f2" green="f2" red="f2" type="rgb"/>
+              <Color PropertyName="color" blue="0" green="66" red="99" type="rgb"/>
             </TitledBorder>
           </Border>
-        </Property>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="f2" green="f2" red="f2" type="rgb"/>
         </Property>
       </Properties>
 
@@ -411,12 +422,12 @@
     <Container class="javax.swing.JPanel" name="pnlResumen">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="33" red="33" type="rgb"/>
+          <Color blue="0" green="0" red="0" type="rgb"/>
         </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
             <TitledBorder title="Resumen del reporte">
-              <Color PropertyName="color" blue="f2" green="f2" red="f2" type="rgb"/>
+              <Color PropertyName="color" blue="0" green="66" red="99" type="rgb"/>
             </TitledBorder>
           </Border>
         </Property>
@@ -469,8 +480,28 @@
     </Container>
     <Component class="javax.swing.JLabel" name="lblEstado">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="66" red="99" type="rgb"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Seleccione un reporte y pulse &#xab;Generar&#xbb;."/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btn_volver">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="0" type="rgb"/>
+        </Property>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="12" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="66" red="99" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Volver"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_volverActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
