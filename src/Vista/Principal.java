@@ -470,7 +470,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_trabajadoresActionPerformed
 
     private void btn_serviciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_serviciosActionPerformed
-        abrirYcerrarPrincipal(new Reporte_Java());
+        abrirYcerrarPrincipal(new Servicio());
     }//GEN-LAST:event_btn_serviciosActionPerformed
 
     private void btn_reportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reportesActionPerformed

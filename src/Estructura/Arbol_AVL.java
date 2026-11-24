@@ -20,11 +20,26 @@ public class Arbol_AVL {
         return n == null ? 0 : altura(n.izquierdo) - altura(n.derecho);
     }
 
-    private String claveTicket(Ticket ticket) {
+    private int extraerNumero(String nroTicket) {
+        if (nroTicket == null || nroTicket.isBlank()) {
+            return 0;
+        }
+        String digitos = nroTicket.replaceAll("\\D+", "");
+        if (digitos.isEmpty()) {
+            return 0;
+        }
+        try {
+            return Integer.parseInt(digitos);
+        } catch (NumberFormatException ex) {
+            return 0;
+        }
+    }
+
+    private int claveTicket(Ticket ticket) {
         if (ticket == null || ticket.getNroTicket() == null || ticket.getNroTicket().isBlank()) {
             throw new IllegalArgumentException("El ticket y su número de ticket son obligatorios.");
         }
-        return ticket.getNroTicket().trim();
+        return extraerNumero(ticket.getNroTicket().trim());
     }
 
     private Nodo_AVL rotacionDerecha(Nodo_AVL y) {
@@ -54,17 +69,17 @@ public class Arbol_AVL {
     }
 
     public void insertar(Ticket ticket) {
-        String clave = claveTicket(ticket);
+        int clave = claveTicket(ticket);
         raiz = insertarRec(raiz, ticket, clave);
     }
 
-    private Nodo_AVL insertarRec(Nodo_AVL nodo, Ticket ticket, String claveNueva) {
+    private Nodo_AVL insertarRec(Nodo_AVL nodo, Ticket ticket, int claveNueva) {
         if (nodo == null) {
             return new Nodo_AVL(ticket);
         }
 
-        String claveActual = claveTicket(nodo.ticket);
-        int comparacion = claveNueva.compareTo(claveActual);
+        int claveActual = claveTicket(nodo.ticket);
+        int comparacion = Integer.compare(claveNueva, claveActual);
 
         if (comparacion < 0) {
             nodo.izquierdo = insertarRec(nodo.izquierdo, ticket, claveNueva);
@@ -78,17 +93,17 @@ public class Arbol_AVL {
         nodo.altura = 1 + Math.max(altura(nodo.izquierdo), altura(nodo.derecho));
         int balance = obtenerBalance(nodo);
 
-        if (balance > 1 && claveNueva.compareTo(claveTicket(nodo.izquierdo.ticket)) < 0) {
+        if (balance > 1 && claveNueva < claveTicket(nodo.izquierdo.ticket)) {
             return rotacionDerecha(nodo);
         }
-        if (balance < -1 && claveNueva.compareTo(claveTicket(nodo.derecho.ticket)) > 0) {
+        if (balance < -1 && claveNueva > claveTicket(nodo.derecho.ticket)) {
             return rotacionIzquierda(nodo);
         }
-        if (balance > 1 && claveNueva.compareTo(claveTicket(nodo.izquierdo.ticket)) > 0) {
+        if (balance > 1 && claveNueva > claveTicket(nodo.izquierdo.ticket)) {
             nodo.izquierdo = rotacionIzquierda(nodo.izquierdo);
             return rotacionDerecha(nodo);
         }
-        if (balance < -1 && claveNueva.compareTo(claveTicket(nodo.derecho.ticket)) < 0) {
+        if (balance < -1 && claveNueva < claveTicket(nodo.derecho.ticket)) {
             nodo.derecho = rotacionDerecha(nodo);
             return rotacionIzquierda(nodo);
         }
@@ -100,21 +115,22 @@ public class Arbol_AVL {
         if (codigo == null || codigo.isBlank()) {
             return null;
         }
-        return buscarRec(raiz, codigo.trim());
+        return buscarRec(raiz, extraerNumero(codigo.trim()));
     }
 
-    private Ticket buscarRec(Nodo_AVL nodo, String codigo) {
+    private Ticket buscarRec(Nodo_AVL nodo, int numeroBuscado) {
         if (nodo == null || nodo.ticket == null || nodo.ticket.getNroTicket() == null) {
             return null;
         }
 
-        int comparacion = codigo.compareTo(nodo.ticket.getNroTicket().trim());
+        int numeroActual = claveTicket(nodo.ticket);
+        int comparacion = Integer.compare(numeroBuscado, numeroActual);
         if (comparacion == 0) {
             return nodo.ticket;
         }
         return comparacion < 0
-                ? buscarRec(nodo.izquierdo, codigo)
-                : buscarRec(nodo.derecho, codigo);
+                ? buscarRec(nodo.izquierdo, numeroBuscado)
+                : buscarRec(nodo.derecho, numeroBuscado);
     }
 
     public Ticket[] obtenerTodosEnOrden() {
@@ -132,6 +148,40 @@ public class Arbol_AVL {
             lista.add(nodo.ticket);
         }
         inOrden(nodo.derecho, lista);
+    }
+
+    public Ticket[] obtenerPreOrden() {
+        List<Ticket> lista = new ArrayList<>();
+        preOrden(raiz, lista);
+        return lista.toArray(new Ticket[0]);
+    }
+
+    private void preOrden(Nodo_AVL nodo, List<Ticket> lista) {
+        if (nodo == null) {
+            return;
+        }
+        if (nodo.ticket != null) {
+            lista.add(nodo.ticket);
+        }
+        preOrden(nodo.izquierdo, lista);
+        preOrden(nodo.derecho, lista);
+    }
+
+    public Ticket[] obtenerPostOrden() {
+        List<Ticket> lista = new ArrayList<>();
+        postOrden(raiz, lista);
+        return lista.toArray(new Ticket[0]);
+    }
+
+    private void postOrden(Nodo_AVL nodo, List<Ticket> lista) {
+        if (nodo == null) {
+            return;
+        }
+        postOrden(nodo.izquierdo, lista);
+        postOrden(nodo.derecho, lista);
+        if (nodo.ticket != null) {
+            lista.add(nodo.ticket);
+        }
     }
 
     public void limpiar() {

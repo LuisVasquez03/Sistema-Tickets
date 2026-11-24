@@ -174,6 +174,83 @@ public class Ticket_Servicio {
         return listaTickets.obtenerTodos();
     }
 
+    public List<Ticket> listarTodosDesdeBD() {
+        List<Ticket> lista = new ArrayList<>();
+
+        String sql = "SELECT ID_ORDEN, NRO_TICKET, ID_CLIENTE, ID_VEHICULO, ID_TRABAJADOR, "
+                   + "FECHA_INGRESO, FECHA_ESTIMADA, FECHA_TERMINO, FECHA_SALIDA, ESTADO, "
+                   + "MOTIVO_RETRASO, NOTA_CORRECCION, MOTIVO_CANCELACION, "
+                   + "SUBTOTAL, DESCUENTO_PORCENTAJE, DESCUENTO_MONTO, MOTIVO_DESCUENTO, "
+                   + "RECARGO_TARJETA, MONTO_IGV, TOTAL "
+                   + "FROM ORDEN_SERVICIO ORDER BY ID_ORDEN ASC";
+
+        try (Connection con = ConexionBD.conn();
+             PreparedStatement pstmt = con != null ? con.prepareStatement(sql) : null) {
+
+            if (pstmt == null) {
+                return lista;
+            }
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Ticket t = new Ticket();
+                    t.setIdOrden(rs.getInt("ID_ORDEN"));
+                    t.setNroTicket(rs.getString("NRO_TICKET"));
+                    t.setIdCliente(rs.getInt("ID_CLIENTE"));
+                    t.setIdVehiculo(rs.getInt("ID_VEHICULO"));
+                    t.setIdTrabajador(rs.getInt("ID_TRABAJADOR"));
+
+                    Timestamp fIng = rs.getTimestamp("FECHA_INGRESO");
+                    Timestamp fEst = rs.getTimestamp("FECHA_ESTIMADA");
+                    Timestamp fTer = rs.getTimestamp("FECHA_TERMINO");
+                    Timestamp fSal = rs.getTimestamp("FECHA_SALIDA");
+                    if (fIng != null) t.setFechaIngreso(fIng.toLocalDateTime());
+                    if (fEst != null) t.setFechaEstimada(fEst.toLocalDateTime());
+                    if (fTer != null) t.setFechaTermino(fTer.toLocalDateTime());
+                    if (fSal != null) t.setFechaSalida(fSal.toLocalDateTime());
+
+                    t.setEstado(rs.getString("ESTADO"));
+                    t.setMotivoRetraso(rs.getString("MOTIVO_RETRASO"));
+                    t.setNotaCorreccion(rs.getString("NOTA_CORRECCION"));
+                    t.setMotivoCancelacion(rs.getString("MOTIVO_CANCELACION"));
+                    t.setSubtotal(rs.getBigDecimal("SUBTOTAL"));
+                    t.setDescuentoPorcentaje(rs.getBigDecimal("DESCUENTO_PORCENTAJE"));
+                    t.setDescuentoMonto(rs.getBigDecimal("DESCUENTO_MONTO"));
+                    t.setMotivoDescuento(rs.getString("MOTIVO_DESCUENTO"));
+                    t.setRecargoTarjeta(rs.getBigDecimal("RECARGO_TARJETA"));
+                    t.setMontoIgv(rs.getBigDecimal("MONTO_IGV"));
+                    t.setTotal(rs.getBigDecimal("TOTAL"));
+
+                    lista.add(t);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al consultar todos los tickets desde BD: " + e.getMessage());
+        }
+
+        return lista;
+    }
+
+    public String generarSiguienteNroTicket() {
+        int maxNumero = 0;
+        for (Ticket t : listarTodosDesdeBD()) {
+            if (t.getNroTicket() != null) {
+                String digitos = t.getNroTicket().replaceAll("\\D+", "");
+                if (!digitos.isEmpty()) {
+                    try {
+                        int num = Integer.parseInt(digitos);
+                        if (num > maxNumero) {
+                            maxNumero = num;
+                        }
+                    } catch (NumberFormatException ignored) {
+                    }
+                }
+            }
+        }
+        return String.format("TCK - %03d", maxNumero + 1);
+    }
+
     public List<Ticket> obtenerTicketsPorEstadoDesdeBD(String estado) {
         List<Ticket> lista = new ArrayList<>();
         if (estado == null || estado.isBlank()) {

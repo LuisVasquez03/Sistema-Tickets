@@ -43,9 +43,8 @@ public class Reporte_Java extends javax.swing.JFrame {
     private Resultado actual;
     public Reporte_Java() {
         initComponents();
-        getContentPane().setBackground(new java.awt.Color(153, 102, 0));
+        getContentPane().setBackground(new java.awt.Color(18, 17, 17));
         configurarFormulario();
-        getContentPane().setBackground(new java.awt.Color(153, 102, 0));
     }
 
     /**

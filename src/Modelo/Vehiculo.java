@@ -77,7 +77,4 @@ public class Vehiculo {
     public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
     }
-    
-    
-    
 }
